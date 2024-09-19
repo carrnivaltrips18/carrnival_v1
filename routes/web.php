@@ -17,6 +17,11 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/chat', function () {
+    return view('chat');
+})->middleware('auth');
+
+
 // routes/web.php
 
 
@@ -37,6 +42,6 @@ Route::prefix('admin')->group(function () {
 });
 
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
