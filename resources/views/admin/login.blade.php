@@ -61,7 +61,7 @@
           </div>
         </form>
   
-        <div class="social-auth-links text-center mb-3">
+        {{-- <div class="social-auth-links text-center mb-3">
           <p>- OR -</p>
           <a href="#" class="btn btn-block btn-primary">
             <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
@@ -77,7 +77,7 @@
         </p>
         <p class="mb-0">
           <a href="{{ route('admin.register') }}" class="text-center">Register a new membership</a>
-        </p>
+        </p> --}}
       </div>
       <!-- /.login-card-body -->
     </div>

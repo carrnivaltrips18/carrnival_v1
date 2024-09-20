@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
 
+
+
 Route::get('/', function () {
     // Redirect to the home page if the user is logged in
     if (Auth::check()) {
@@ -33,12 +35,31 @@ Route::prefix('admin')->group(function () {
     // Admin Registration (optional, you might only want admins to be created manually)
     Route::get('/register', [AdminController::class, 'registerForm'])->name('admin.register');
     Route::post('/register', [AdminController::class, 'register'])->name('admin.register.submit');
+   
+});
+
+Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+});
+
+Route::middleware(['auth:admin','role:superadmin'])->prefix('admin')->group(function () {
+    // Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    // Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+    Route::get('/assign-role', [AdminController::class, 'assignRoleForm'])->name('admin.assign.role');
+    Route::post('/assign-role', [AdminController::class, 'assignRole'])->name('admin.assign.role.submit');
     
-    // Admin Dashboard (protected by the 'admin' middleware)
-    Route::middleware('admin')->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-        Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
-    });
+    Route::get('/assign-permission', [AdminController::class, 'assignPermissionForm'])->name('admin.assign.permission');
+    Route::post('/assign-permission', [AdminController::class, 'assignPermission'])->name('admin.assign.permission.submit');
+});
+
+Route::middleware(['auth:admin', 'role:superadmin|sales'])->group(function () {
+    Route::get('admin/sales/dashboard', [AdminController::class, 'salesDashboard'])->name('admin.sales_dashboard');
+});
+
+Route::middleware(['auth:admin', 'role:superadmin|operations'])->group(function () {
+    Route::get('admin/operations/dashboard', [AdminController::class, 'operationsDashboard'])->name('admin.operations_dashboard');
 });
 
 

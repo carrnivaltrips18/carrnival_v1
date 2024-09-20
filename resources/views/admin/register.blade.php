@@ -81,7 +81,7 @@
             <!-- /.col -->
           </div>
         </form>
-
+{{-- 
         <div class="social-auth-links text-center">
           <p>- OR -</p>
           <a href="#" class="btn btn-block btn-primary">
@@ -92,9 +92,9 @@
             <i class="fab fa-google-plus mr-2"></i>
             Sign up using Google+
           </a>
-        </div>
+        </div> --}}
 
-        <a href="{{ route('admin.login') }}" class="text-center">I already have a membership</a>
+        <a href="{{ route('admin.login') }}" class="text-center">Back</a>
       </div>
       <!-- /.form-box -->
   </div>
