@@ -35,6 +35,7 @@ class AdminController extends Controller
             $super_admin_email = $admin_user['email'];  // Get the email of the authenticated admin user
 
             if (!$admin_user->hasRole('superadmin') && $super_admin_email == 'superadmin@example.com') {
+                dd("okk");
                 $admin_user->assignRole('superadmin'); // Assign the role to the user
             }
             return redirect()->route('admin.dashboard');
@@ -118,6 +119,7 @@ class AdminController extends Controller
     {
         $admins = Admin::all();
         $permissions = Permission::all();
+      //  dd($admins);
         return view('admin.assign-permission', compact('admins', 'permissions'));
     }
 
@@ -133,5 +135,31 @@ class AdminController extends Controller
           $admin->givePermissionTo($request->permission);
   
           return redirect()->back()->with('success', 'Permission assigned successfully.');
+      }
+
+      public function manageSales()
+      {
+          $adminUser = Auth::guard('admin')->user();
+  
+          // Check if the user has the required role and permission
+          if (!$adminUser->hasRole('sales') || !$adminUser->can('manage sales')) {
+              throw new UnauthorizedException('You do not have permission to manage sales.');
+          }
+  
+          // Logic for managing sales
+          return view('admin.sales.index');
+      }
+
+      public function manageOperations()
+      {
+          $adminUser = Auth::guard('admin')->user();
+  
+          // Check if the user has the required role and permission
+          if (!$adminUser->hasRole('operations') || !$adminUser->can('manage operations')) {
+              throw new UnauthorizedException('You do not have permission to manage operations.');
+          }
+  
+          // Logic for managing operations
+          return view('admin.operations.index');
       }
 }

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\AdminUserController;
 
 
 Route::get('/', function () {
@@ -44,14 +44,19 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 });
 
 Route::middleware(['auth:admin','role:superadmin'])->prefix('admin')->group(function () {
-    // Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    // Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
     Route::get('/assign-role', [AdminController::class, 'assignRoleForm'])->name('admin.assign.role');
     Route::post('/assign-role', [AdminController::class, 'assignRole'])->name('admin.assign.role.submit');
     
     Route::get('/assign-permission', [AdminController::class, 'assignPermissionForm'])->name('admin.assign.permission');
     Route::post('/assign-permission', [AdminController::class, 'assignPermission'])->name('admin.assign.permission.submit');
+
+    // Route::get('/admins', [AdminUserController::class, 'index'])->name('admin.admins.index');
+    // Route::get('/admins/create', [AdminUserController::class, 'create'])->name('admin.admins.create');
+    // Route::post('/admins', [AdminUserController::class, 'store'])->name('admin.admins.store');
+    // Route::get('/admins/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.admins.edit');
+    // Route::put('/admins/{id}', [AdminUserController::class, 'update'])->name('admin.admins.update');
+    // Route::delete('/admins/{id}', [AdminUserController::class, 'destroy'])->name('admin.admins.destroy');
 });
 
 Route::middleware(['auth:admin', 'role:superadmin|sales'])->group(function () {
@@ -62,7 +67,23 @@ Route::middleware(['auth:admin', 'role:superadmin|operations'])->group(function 
     Route::get('admin/operations/dashboard', [AdminController::class, 'operationsDashboard'])->name('admin.operations_dashboard');
 });
 
+Route::middleware(['auth:admin', 'role:sales', 'permission:manage sales'])->group(function () {
+    Route::get('/admin/sales', [AdminController::class, 'manageSales'])->name('admin.manage_sales');
+});
 
-// Auth::routes();
+Route::middleware(['auth:admin', 'role:operations', 'permission:manage operations'])->group(function () {
+    Route::get('/admin/operations', [AdminController::class, 'manageOperations'])->name('admin.manage_operations');
+});
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth:admin', 'role:superadmin|subAdmin','permission:manage users'])->group(function () {
+    // Route to manage users
+    Route::get('/admins', [AdminUserController::class, 'index'])->name('admin.admins.index');
+    Route::get('/admins/create', [AdminUserController::class, 'create'])->name('admin.admins.create');
+    Route::post('/admins', [AdminUserController::class, 'store'])->name('admin.admins.store');
+    Route::get('/admins/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.admins.edit');
+    Route::put('/admins/{id}', [AdminUserController::class, 'update'])->name('admin.admins.update');
+    Route::delete('/admins/{id}', [AdminUserController::class, 'destroy'])->name('admin.admins.destroy');
+});
+
+
+

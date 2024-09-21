@@ -14,7 +14,7 @@
         <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">Alexander Pierce</a>
+        <a href="#" class="d-block">{{ Auth::guard('admin')->user()->name }}</a>
       </div>
     </div>
 
@@ -44,18 +44,24 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('admin.operations_dashboard') }}" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Operations Dashboard</p>
-              </a>
-            </li>
+            @if(Auth::guard('admin')->user()->hasRole('sales') || Auth::guard('admin')->user()->hasRole('superadmin'))
             <li class="nav-item">
               <a href="{{ route("admin.sales_dashboard") }}" class="nav-link active">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Sales Dashboard</p>
               </a>
             </li>
+            @endif
+
+            @if(Auth::guard('admin')->user()->hasRole('operations') || Auth::guard('admin')->user()->hasRole('superadmin'))
+            <li class="nav-item">
+              <a href="{{ route('admin.operations_dashboard') }}" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Operations Dashboard</p>
+              </a>
+            </li>
+            @endif
+            
             {{-- <li class="nav-item">
               <a href="./index2.html" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
@@ -413,25 +419,35 @@
                 <p>Contacts</p>
               </a> 
             </li> --}}
-            <?php
-              $admin_user = Auth::guard('admin')->user();
-             if ($admin_user->hasRole('superadmin')) {
-                ?>
-                  <li class="nav-item">
-                    <a href="{{ route('admin.assign.permission') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Assign Roles</p>
+
+            @php
+                $admin_user = Auth::guard('admin')->user();
+            @endphp
+
+            @if($admin_user->hasRole(['superadmin', 'subAdmin']) || $admin_user->can('manage users'))
+            <li class="nav-item">
+                <a href="{{ route('admin.admins.index') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage Admin Users</p>
+                </a>
+            </li>
+            @endif
+
+
+            @if($admin_user->hasRole('superadmin'))
+                <li class="nav-item">
+                    <a href="{{ route('admin.assign.role') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Assign Roles</p>
                     </a>
-                  </li>
-                  <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.assign.permission') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Assign Permissions</p>
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Assign Permissions</p>
                     </a>
-                  </li>
-                <?php
-            }
-            ?>
+                </li>
+            @endif
            
 
             {{-- <li class="nav-item">

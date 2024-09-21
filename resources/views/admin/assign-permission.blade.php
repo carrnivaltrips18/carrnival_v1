@@ -33,5 +33,6 @@
         
         <button type="submit" class="btn btn-primary">Assign Permission</button>
     </form>
+    <button onclick="window.history.back();" class="btn btn-secondary mt-3">Back</button>
 </div>
 @endsection

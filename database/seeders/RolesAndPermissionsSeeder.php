@@ -30,9 +30,13 @@ class RolesAndPermissionsSeeder extends Seeder
         $sales = Role::create(['name' => 'sales', 'guard_name' => 'admin']);
         $operation = Role::create(['name' => 'operations', 'guard_name' => 'admin']);
 
+        $subAdmin = Role::create(['name' => 'subAdmin', 'guard_name' => 'admin']);
+
         // Assign permissions to roles
         $superAdmin->givePermissionTo(Permission::all());
         $sales->givePermissionTo(['view dashboard', 'manage sales']);
         $operation->givePermissionTo(['view dashboard', 'manage operations']);
+        
+        $subAdmin->givePermissionTo(['view dashboard', 'manage users']);
     }
 }
