@@ -12,16 +12,11 @@
         @csrf
         <button type="submit">Logout</button>
     </form></li>
-    <?php 
-      $admin_user = Auth::guard('admin')->user();
-      if ($admin_user->hasRole('superadmin')) {
-        ?>
-          <li class="nav-item d-none d-sm-inline-block">
+    @if (Auth::guard('admin')->user()->hasRole('superadmin'))
+        <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('admin.register') }}" class="nav-link">Register a new User</a>
-          </li>
-        <?php
-      }
-    ?>
+        </li>
+    @endif
     
   </ul>
 
