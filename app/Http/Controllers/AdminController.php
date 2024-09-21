@@ -35,7 +35,6 @@ class AdminController extends Controller
             $super_admin_email = $admin_user['email'];  // Get the email of the authenticated admin user
 
             if (!$admin_user->hasRole('superadmin') && $super_admin_email == 'superadmin@example.com') {
-                dd("okk");
                 $admin_user->assignRole('superadmin'); // Assign the role to the user
             }
             return redirect()->route('admin.dashboard');
