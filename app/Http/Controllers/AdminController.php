@@ -32,6 +32,12 @@ class AdminController extends Controller
             // Get the authenticated admin user
             $admin_user = Auth::guard('admin')->user();
 
+            if ($admin_user && $admin_user->status != 1) {
+                // Logout and redirect to the login page with an error
+                Auth::guard('admin')->logout();
+                return redirect()->route('admin.login')->withErrors('Your account is inactive.');
+            }
+
             $super_admin_email = $admin_user['email'];  // Get the email of the authenticated admin user
 
             if (!$admin_user->hasRole('superadmin') && $super_admin_email == 'superadmin@example.com') {

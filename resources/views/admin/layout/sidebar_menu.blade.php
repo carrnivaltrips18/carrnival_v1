@@ -1,9 +1,9 @@
  <!-- Main Sidebar Container -->
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="index3.html" class="brand-link">
+  <a href="{{ route('admin.dashboard') }}" class="brand-link">
     <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">AdminLTE 3</span>
+    <span class="brand-text font-weight-light">Admin | Carnival Trips</span>
   </a>
 
   <!-- Sidebar -->
@@ -15,6 +15,10 @@
       </div>
       <div class="info">
         <a href="#" class="d-block">{{ Auth::guard('admin')->user()->name }}</a>
+        @if(Auth::guard('admin')->check())
+        <p style="color: white; font-weight: bold;">Role: {{ ucfirst(Auth::guard('admin')->user()->roles->pluck('name')->join(', ')) }}</p>
+        @endif
+    
       </div>
     </div>
 
@@ -44,56 +48,37 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            @if(Auth::guard('admin')->user()->hasRole('sales') || Auth::guard('admin')->user()->hasRole('superadmin'))
-            <li class="nav-item">
-              <a href="{{ route("admin.sales_dashboard") }}" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Sales Dashboard</p>
-              </a>
-            </li>
-            @endif
+            @php
+            $admin_user = Auth::guard('admin')->user();
+        @endphp
 
-            @if(Auth::guard('admin')->user()->hasRole('operations') || Auth::guard('admin')->user()->hasRole('superadmin'))
+        @if($admin_user->hasRole(['superadmin', 'subAdmin']) || $admin_user->can('manage users'))
+        <li class="nav-item">
+            <a href="{{ route('admin.admins.index') }}" class="nav-link {{ Request::routeIs('admin.admins.index') ? 'active' : '' }}">
+                <i class="fas fa-user-alt"></i>
+                <p>Manage Admin Users</p>
+            </a>
+        </li>
+        @endif
+
+
+        @if($admin_user->hasRole('superadmin'))
             <li class="nav-item">
-              <a href="{{ route('admin.operations_dashboard') }}" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Operations Dashboard</p>
-              </a>
+                <a href="{{ route('admin.assign.role') }}" class="nav-link {{ Request::routeIs('admin.assign.role') ? 'active' : '' }}">
+                     <i class="fas fa-user-tag"></i>
+                    <p>Assign Roles</p>
+                </a>
             </li>
-            @endif
+            <li class="nav-item">
+                <a href="{{ route('admin.assign.permission') }}" class="nav-link {{ Request::routeIs('admin.assign.permission') ? 'active' : '' }}">
+                   <i class="fas fa-drum"></i>
+                    <p>Assign Permissions</p>
+                </a>
+            </li>
+        @endif
             
           </ul>
         </li>
-
-            @php
-                $admin_user = Auth::guard('admin')->user();
-            @endphp
-
-            @if($admin_user->hasRole(['superadmin', 'subAdmin']) || $admin_user->can('manage users'))
-            <li class="nav-item">
-                <a href="{{ route('admin.admins.index') }}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Manage Admin Users</p>
-                </a>
-            </li>
-            @endif
-
-
-            @if($admin_user->hasRole('superadmin'))
-                <li class="nav-item">
-                    <a href="{{ route('admin.assign.role') }}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Assign Roles</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.assign.permission') }}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Assign Permissions</p>
-                    </a>
-                </li>
-            @endif
-           
 
             {{-- <li class="nav-item">
               <a href="pages/examples/faq.html" class="nav-link">

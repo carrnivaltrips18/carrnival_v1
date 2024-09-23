@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUserController;
+use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', function () {
@@ -83,6 +84,8 @@ Route::middleware(['auth:admin', 'role:superadmin|subAdmin','permission:manage u
     Route::get('/admins/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.admins.edit');
     Route::put('/admins/{id}', [AdminUserController::class, 'update'])->name('admin.admins.update');
     Route::delete('/admins/{id}', [AdminUserController::class, 'destroy'])->name('admin.admins.destroy');
+    Route::patch('admin/admins/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('admin.admins.toggleStatus');
+
 });
 
 

@@ -11,9 +11,17 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $admins = Admin::with('roles')->get();
+        //$admins = Admin::with('roles')->get();
+       // $admins = Admin::with('roles')->paginate(10);
+       $search = $request->input('search');
+       $admins = Admin::with('roles')
+                ->when($search, function($query, $search) {
+                    return $query->where('name', 'like', '%' . $search . '%')
+                                 ->orWhere('email', 'like', '%' . $search . '%');
+                })
+                ->paginate(10); // Paginate results
         return view('admin.admins.index', compact('admins'));
     }
 
@@ -42,7 +50,7 @@ class AdminUserController extends Controller
 
         // Assign role to the admin user
         $admin->assignRole($request->role);
-       // dd($admin->assignRole($request->role));
+        // dd($admin->assignRole($request->role));
 
         // Optionally, assign permissions to the admin user
         if ($request->has('permissions')) {
@@ -92,4 +100,13 @@ class AdminUserController extends Controller
         return redirect()->route('admin.admins.index')->with('success', 'Admin user deleted successfully.');
     }
 
+    // Method to toggle admin status
+    public function toggleStatus($id)
+    {
+        $admin = Admin::findOrFail($id);
+        $admin->status = !$admin->status; // Toggle status between 1 and 0
+        $admin->save();
+
+        return redirect()->route('admin.admins.index')->with('success', 'Admin status updated successfully.');
+    }
 }
