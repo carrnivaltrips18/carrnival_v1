@@ -1,5 +1,10 @@
+@php
+      $company = App\Models\CompanyDetail::first(); // Make sure to use the correct namespace
+      $company_site_url = $company->website;
+      $company_name = $company->name;
+  @endphp
 <footer class="main-footer">
-  <strong>Copyright &copy; 2012-2024 <a href="https://carrnivaltrips.com/" target="_blank">Carnival Trips</a>.</strong>
+  <strong>Copyright &copy; 2012-2024 <a href="{{ $company_site_url }}" target="_blank">{{ $company_name }}</a>.</strong>
   All rights reserved.
   <div class="float-right d-none d-sm-inline-block">
     <b>Version</b> 1.0.0

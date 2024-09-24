@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\CompanyDetailController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -52,12 +53,10 @@ Route::middleware(['auth:admin','role:superadmin'])->prefix('admin')->group(func
     Route::get('/assign-permission', [AdminController::class, 'assignPermissionForm'])->name('admin.assign.permission');
     Route::post('/assign-permission', [AdminController::class, 'assignPermission'])->name('admin.assign.permission.submit');
 
-    // Route::get('/admins', [AdminUserController::class, 'index'])->name('admin.admins.index');
-    // Route::get('/admins/create', [AdminUserController::class, 'create'])->name('admin.admins.create');
-    // Route::post('/admins', [AdminUserController::class, 'store'])->name('admin.admins.store');
-    // Route::get('/admins/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.admins.edit');
-    // Route::put('/admins/{id}', [AdminUserController::class, 'update'])->name('admin.admins.update');
-    // Route::delete('/admins/{id}', [AdminUserController::class, 'destroy'])->name('admin.admins.destroy');
+    Route::get('/company', [CompanyDetailController::class, 'index'])->name('admin.company.index');
+    Route::get('/company/edit', [CompanyDetailController::class, 'edit'])->name('admin.company.edit');
+    Route::post('/company/update', [CompanyDetailController::class, 'update'])->name('admin.company.update');
+    Route::delete('company-details/{id}', [CompanyDetailController::class, 'destroy'])->name('company.details.destroy');
 });
 
 Route::middleware(['auth:admin', 'role:superadmin|sales'])->group(function () {
