@@ -21,8 +21,9 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            // RolesAndPermissionsSeeder::class,
-            // AdminSeeder::class, // Add your AdminSeeder here
+            RolesAndPermissionsSeeder::class,
+            AdminSeeder::class, // Add your AdminSeeder here
+            
             DestinationSeeder::class,
             PopularTourSeeder::class,
             PackageSeeder::class,
