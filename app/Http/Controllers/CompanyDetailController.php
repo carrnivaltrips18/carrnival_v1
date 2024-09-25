@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\CompanyDetail;
 use Illuminate\Support\Facades\Storage;
 
+
 class CompanyDetailController extends Controller
 {
     public function index()
@@ -88,5 +89,6 @@ class CompanyDetailController extends Controller
         return redirect()->route('company.details.index')
                         ->with('success', 'Company details and logo deleted successfully.');
     }
+
 
 }

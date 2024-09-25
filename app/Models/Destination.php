@@ -9,7 +9,7 @@ class Destination extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'banner'];
+    protected $fillable = ['name', 'title', 'banner', 'long_description', 'meta_title', 'meta_content'];
 
     // One Destination can have many Popular Tours
     public function popularTours()

@@ -85,6 +85,12 @@
                   <p>Master Entry</p>
               </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('destinations.index') }}" class="nav-link {{ Request::routeIs('destinations.index') ? 'active' : '' }}">
+              <i class="fa-solid fa-street-view"></i>
+                <p>Destinations</p>
+            </a>
+        </li>
         @endif
             
           </ul>

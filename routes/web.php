@@ -7,6 +7,10 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CompanyDetailController;
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Controllers\DestinationController;
+
+
+
 
 Route::get('/', function () {
     // Redirect to the home page if the user is logged in
@@ -84,8 +88,12 @@ Route::middleware(['auth:admin', 'role:superadmin|subAdmin','permission:manage u
     Route::put('/admins/{id}', [AdminUserController::class, 'update'])->name('admin.admins.update');
     Route::delete('/admins/{id}', [AdminUserController::class, 'destroy'])->name('admin.admins.destroy');
     Route::patch('admin/admins/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('admin.admins.toggleStatus');
+    Route::resource('destinations', DestinationController::class);
+    Route::get('/admin/users/csv', [AdminUserController::class, 'exportCsv'])->name('admin.users.csv');
 
 });
+
+
 
 
 

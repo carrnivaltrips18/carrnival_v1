@@ -9,6 +9,11 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Hash;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 class AdminUserController extends Controller
 {
     public function index(Request $request)
@@ -109,4 +114,54 @@ class AdminUserController extends Controller
 
         return redirect()->route('admin.admins.index')->with('success', 'Admin status updated successfully.');
     }
+
+    
+
+public function exportCsv()
+{
+    $admins = Admin::with('roles')->get();
+
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    // Set header
+    $sheet->setCellValue('A1', 'ID');
+    $sheet->setCellValue('B1', 'Name');
+    $sheet->setCellValue('C1', 'Email');
+    $sheet->setCellValue('D1', 'Role');
+    $sheet->setCellValue('E1', 'Status');
+    $sheet->setCellValue('F1', 'Created At');
+    $sheet->setCellValue('G1', 'StaUpdated At');
+
+    //dd($admins);
+    // Add data
+    $row = 2;
+    $serial = 1; 
+    foreach ($admins as $user) {
+        $roles = $user->roles->pluck('name')->implode(', ');
+       
+
+        $sheet->setCellValue('A' . $row, $serial);
+        $sheet->setCellValue('B' . $row, $user->name);
+        $sheet->setCellValue('C' . $row, $user->email);
+        $sheet->setCellValue('D' . $row, $roles);
+        $sheet->setCellValue('E' . $row, $user->status);
+        $sheet->setCellValue('F' . $row, $user->created_at);
+        $sheet->setCellValue('G' . $row, $user->updated_at);
+
+        $serial++;
+        $row++;
+    }
+
+    // Export as CSV
+    $writer = new Csv($spreadsheet);
+    $fileName = 'admin_users.csv';
+
+    return new StreamedResponse(function () use ($writer) {
+        $writer->save('php://output');
+    }, 200, [
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => 'attachment;filename="' . $fileName . '"',
+    ]);
+}
 }
