@@ -3,7 +3,29 @@
 @section('content')
     <div class="container">
         <h1>Destinations</h1>
-        <a href="{{ route('destinations.create') }}" class="btn btn-primary">Create Destination</a>
+        <form action="{{ route('destinations.uploadCsv') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="file">Upload CSV file</label>
+                <input type="file" name="file" id="file" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload CSV</button>
+        </form>
+        
+        <div class="d-flex justify-content-between align-items-center m-2">
+            <!-- Left: Create New Admin button -->
+            <a href="{{ route('destinations.create') }}" class="btn btn-primary mr-3">Create Destination</a>
+            
+            <!-- Center: Search Form with margin -->
+            <form action="{{ route('destinations.index') }}" method="GET" class="form-inline mr-3">
+                <input type="text" name="search" class="form-control mr-2" placeholder="Search Destinations..." value="{{ request()->get('search') }}">
+                <button type="submit" class="btn btn-secondary">Search</button>
+            </form>
+    
+            <!-- Right: CSV Download Button -->
+            <a href="{{ route('destinations.exportCsv') }}" class="btn btn-success">Download CSV</a>
+        </div>
+        
         
         @if(session('success'))
             <div class="alert alert-success">

@@ -89,6 +89,10 @@ Route::middleware(['auth:admin', 'role:superadmin|subAdmin','permission:manage u
     Route::delete('/admins/{id}', [AdminUserController::class, 'destroy'])->name('admin.admins.destroy');
     Route::patch('admin/admins/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('admin.admins.toggleStatus');
     Route::resource('destinations', DestinationController::class);
+    Route::get('destinations/export/csv', [DestinationController::class, 'exportCsvDestination'])
+    ->name('destinations.exportCsv');
+    Route::post('destinations/upload-csv', [DestinationController::class, 'uploadCsvDestination'])->name('destinations.uploadCsv');
+
     Route::get('/admin/users/csv', [AdminUserController::class, 'exportCsv'])->name('admin.users.csv');
 
 });

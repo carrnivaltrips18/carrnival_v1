@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Activity;
+use App\Models\Destination;
+use App\Models\PopularTour;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,14 +23,19 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $this->call([
-            RolesAndPermissionsSeeder::class,
-            AdminSeeder::class, // Add your AdminSeeder here
+        $this->call(DestinationSeeder::class);
+        $this->call(PopularTourSeeder::class);
+        $this->call(ActivitySeeder::class);
+
+        // $this->call([
+        //     RolesAndPermissionsSeeder::class,
+        //     AdminSeeder::class, // Add your AdminSeeder here
             
-            DestinationSeeder::class,
-            PopularTourSeeder::class,
-            PackageSeeder::class,
-            HotelTypeSeeder::class,
-        ]);
+        //     DestinationSeeder::class,
+        //     PopularTourSeeder::class,
+        //     ActivitySeeder::class,
+        //     PackageSeeder::class,
+        //     HotelTypeSeeder::class,
+        // ]);
     }
 }
