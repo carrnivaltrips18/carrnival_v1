@@ -8,6 +8,7 @@ use App\Http\Controllers\CompanyDetailController;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\PopularTourController;
 
 
 
@@ -89,11 +90,20 @@ Route::middleware(['auth:admin', 'role:superadmin|subAdmin','permission:manage u
     Route::delete('/admins/{id}', [AdminUserController::class, 'destroy'])->name('admin.admins.destroy');
     Route::patch('admin/admins/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('admin.admins.toggleStatus');
     Route::resource('destinations', DestinationController::class);
+    Route::patch('/destinations/{id}/toggleStatus', [DestinationController::class, 'toggleStatus'])->name('destinations.toggleStatus');
     Route::get('destinations/export/csv', [DestinationController::class, 'exportCsvDestination'])
     ->name('destinations.exportCsv');
     Route::post('destinations/upload-csv', [DestinationController::class, 'uploadCsvDestination'])->name('destinations.uploadCsv');
 
     Route::get('/admin/users/csv', [AdminUserController::class, 'exportCsv'])->name('admin.users.csv');
+
+    Route::resource('popular_tours', PopularTourController::class);
+    Route::get('/popular_tours/export/csv', [PopularTourController::class, 'exportCsvPopularTours'])->name('popular_tours.exportCsv');
+    Route::post('/popular_tours/upload/csv', [PopularTourController::class, 'importCsvPopularTours'])->name('popular_tours.uploadCsv');
+
+    Route::get('/download-sample-popular-tour', [PopularTourController::class, 'downloadSampleCsv'])->name('popular_tour.downloadSampleCsv');
+    Route::get('/download-sample-destinations', [DestinationController::class, 'downloadSampleCsv'])->name('destinations.downloadSampleCsv');
+
 
 });
 

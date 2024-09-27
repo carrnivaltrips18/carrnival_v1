@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('destination_id')->constrained()->onDelete('cascade');
             $table->string('package_name');
-            $table->integer('duration');
+            $table->string('duration');
             $table->decimal('price', 8, 2);
             $table->text('inclusion')->nullable();
             $table->string('package_image')->nullable();

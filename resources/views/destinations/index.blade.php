@@ -3,14 +3,14 @@
 @section('content')
     <div class="container">
         <h1>Destinations</h1>
-        <form action="{{ route('destinations.uploadCsv') }}" method="POST" enctype="multipart/form-data">
+        {{-- <form action="{{ route('destinations.uploadCsv') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="file">Upload CSV file</label>
                 <input type="file" name="file" id="file" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Upload CSV</button>
-        </form>
+        </form> --}}
         
         <div class="d-flex justify-content-between align-items-center m-2">
             <!-- Left: Create New Admin button -->
@@ -23,7 +23,14 @@
             </form>
     
             <!-- Right: CSV Download Button -->
-            <a href="{{ route('destinations.exportCsv') }}" class="btn btn-success">Download CSV</a>
+            <a href="{{ route('destinations.exportCsv') }}" class="btn btn-success">Export CSV</a>
+            <form action="{{ route('destinations.uploadCsv') }}" method="POST" enctype="multipart/form-data" class="ml-2">
+                @csrf
+                <input type="file" name="file" class="form-control-file" required>
+                <button type="submit" class="btn btn-info">Import CSV</button>
+            </form>
+            
+            <a href="{{ route('destinations.downloadSampleCsv') }}" class="btn btn-info">Download Sample CSV</a>
         </div>
         
         
@@ -39,6 +46,7 @@
                     <th>Name</th>
                     <th>Title</th>
                     <th>Banner</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -53,6 +61,15 @@
                             @else
                                 No Banner
                             @endif
+                        </td>
+                        <td>
+                            <form action="{{ route('destinations.toggleStatus', $destination->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-sm {{ $destination->status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                    {{ $destination->status == 1 ? 'Active' : 'Inactive' }}
+                                </button>
+                            </form>
                         </td>
                         <td>
                             <a href="{{ route('destinations.edit', $destination->id) }}" class="btn btn-warning">Edit</a>

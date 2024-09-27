@@ -91,6 +91,13 @@
                 <p>Destinations</p>
             </a>
         </li>
+        <li class="nav-item">
+          <a href="{{ route('popular_tours.index') }}" class="nav-link {{ Request::routeIs('popular_tours.index') ? 'active' : '' }}">
+            <i class="fa-solid fa-street-view"></i>
+              <p> Popular Tours</p>
+          </a>
+      </li>
+      
         @endif
             
           </ul>

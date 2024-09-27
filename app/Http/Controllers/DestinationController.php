@@ -205,4 +205,27 @@ class DestinationController extends Controller
         return redirect()->back()->with('success', 'CSV file imported successfully.');
     }
 
+
+    public function toggleStatus($id)
+    {
+        $destination = Destination::findOrFail($id);
+
+        // Toggle the status: if it is 1 (active), set it to 0 (inactive) and vice versa.
+        $destination->status = $destination->status === '1' ? '0' : '1';
+        $destination->save();
+
+        return redirect()->route('destinations.index')->with('success', 'Destination status updated successfully!');
+    }
+
+    public function downloadSampleCsv()
+    {
+        $filePath = public_path('csv/sample_destination.csv');
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath, 'sample_destination.csv');
+        }
+
+        return redirect()->back()->with('error', 'Sample CSV file not found.');
+    }
+
 }

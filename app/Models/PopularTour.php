@@ -28,4 +28,9 @@ class PopularTour extends Model
     {
         return $this->hasMany(HotelType::class);
     }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
 }

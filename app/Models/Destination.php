@@ -16,4 +16,9 @@ class Destination extends Model
     {
         return $this->hasMany(PopularTour::class);
     }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
 }
