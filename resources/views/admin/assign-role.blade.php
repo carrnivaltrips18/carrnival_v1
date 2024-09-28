@@ -1,10 +1,16 @@
 @extends('admin.layout.app')
 
 @section('content')
-<div class="container mt-5">
+<div class="container">
+    <h1 class="text-center mb-4">Assign Role to Admin</h1>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="{{ route('admin.admins.index') }}" class="btn btn-primary">Manage Admins</a>
+    </div>
+
     <div class="card shadow">
         <div class="card-header">
-            <h2 class="card-title text-center">Assign Role to Admin</h2>
+            <h2 class="card-title text-center">Assign Role</h2>
         </div>
 
         <div class="card-body">
@@ -37,7 +43,7 @@
                 
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary">Assign Role</button>
-                    <button onclick="window.history.back();" class="btn btn-secondary">Back</button>
+                    <button type="button" onclick="window.history.back();" class="btn btn-secondary">Back</button>
                 </div>
             </form>
         </div>

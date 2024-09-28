@@ -25,8 +25,6 @@
 </head>
 <body class="hold-transition login-page">
     <div id="app">
-    
-
         <main class="py-4">
             @yield('content')
         </main>

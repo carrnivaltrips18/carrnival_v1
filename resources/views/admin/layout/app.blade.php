@@ -26,6 +26,11 @@
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
 
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
   <style>
     nav .w-5{
       display: none;

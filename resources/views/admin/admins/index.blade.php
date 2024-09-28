@@ -1,6 +1,7 @@
 @extends('admin.layout.app')
 
 @section('content')
+<div class="container">
     <h1 class="m-2">Admin Users</h1>
     <!-- Flexbox with spacing between elements -->
     <div class="d-flex justify-content-between align-items-center m-2">
@@ -16,15 +17,6 @@
         <!-- Right: CSV Download Button -->
         <a href="{{ route('admin.users.csv') }}" class="btn btn-success">Download CSV</a>
     </div>
-
-    {{-- <a href="{{ route('admin.admins.create') }}" class="btn btn-primary m-2">Create New Admin</a>
-     <!-- Search Form -->
-     <form action="{{ route('admin.admins.index') }}" method="GET" class="form-inline mb-3 m-2">
-        <input type="text" name="search" class="form-control mr-2" placeholder="Search by name or email" value="{{ request('search') }}">
-        <button type="submit" class="btn btn-secondary">Search</button>
-    </form>
-    
-    <a href="{{ route('admin.users.csv') }}" class="btn btn-success">Download CSV</a> --}}
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -83,5 +75,7 @@
     <div class="pagination-wrapper">
         {{ $admins->links() }}
     </div>
+</div>
+   
 @endsection
 

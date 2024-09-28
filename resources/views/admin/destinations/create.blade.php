@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Create Destination</h1>
         
-        <form action="{{ route('destinations.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.destinations.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="name">Name</label>

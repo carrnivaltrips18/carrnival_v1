@@ -3,34 +3,26 @@
 @section('content')
     <div class="container">
         <h1>Destinations</h1>
-        {{-- <form action="{{ route('destinations.uploadCsv') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label for="file">Upload CSV file</label>
-                <input type="file" name="file" id="file" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Upload CSV</button>
-        </form> --}}
         
         <div class="d-flex justify-content-between align-items-center m-2">
             <!-- Left: Create New Admin button -->
-            <a href="{{ route('destinations.create') }}" class="btn btn-primary mr-3">Create Destination</a>
+            <a href="{{ route('admin.destinations.create') }}" class="btn btn-primary mr-3">Create Destination</a>
             
             <!-- Center: Search Form with margin -->
-            <form action="{{ route('destinations.index') }}" method="GET" class="form-inline mr-3">
+            <form action="{{ route('admin.destinations.index') }}" method="GET" class="form-inline mr-3">
                 <input type="text" name="search" class="form-control mr-2" placeholder="Search Destinations..." value="{{ request()->get('search') }}">
                 <button type="submit" class="btn btn-secondary">Search</button>
             </form>
     
             <!-- Right: CSV Download Button -->
-            <a href="{{ route('destinations.exportCsv') }}" class="btn btn-success">Export CSV</a>
-            <form action="{{ route('destinations.uploadCsv') }}" method="POST" enctype="multipart/form-data" class="ml-2">
+            <a href="{{ route('admin.destinations.exportCsv') }}" class="btn btn-success">Export CSV</a>
+            <form action="{{ route('admin.destinations.uploadCsv') }}" method="POST" enctype="multipart/form-data" class="ml-2">
                 @csrf
                 <input type="file" name="file" class="form-control-file" required>
                 <button type="submit" class="btn btn-info">Import CSV</button>
             </form>
             
-            <a href="{{ route('destinations.downloadSampleCsv') }}" class="btn btn-info">Download Sample CSV</a>
+            <a href="{{ route('admin.destinations.downloadSampleCsv') }}" class="btn btn-info">Download Sample CSV</a>
         </div>
         
         
@@ -39,10 +31,11 @@
                 {{ session('success') }}
             </div>
         @endif
-
+        
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>Sno.</th>
                     <th>Name</th>
                     <th>Title</th>
                     <th>Banner</th>
@@ -51,9 +44,17 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    // Calculate serial number based on pagination
+                    $serial = ($destinations->currentPage() - 1) * $destinations->perPage() + 1;
+                @endphp
                 @foreach($destinations as $destination)
                     <tr>
-                        <td>{{ $destination->name }}</td>
+                        <td>{{ $serial }}</td>
+                        <td><a href="{{ route('admin.popular_tours.index', ['search' => $destination->name]) }}">
+                            {{ $destination->name }}
+                        </a></td>
+                        
                         <td>{{ $destination->title }}</td>
                         <td>
                             @if($destination->banner)
@@ -63,7 +64,7 @@
                             @endif
                         </td>
                         <td>
-                            <form action="{{ route('destinations.toggleStatus', $destination->id) }}" method="POST">
+                            <form action="{{ route('admin.destinations.toggleStatus', $destination->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit" class="btn btn-sm {{ $destination->status == 1 ? 'btn-success' : 'btn-danger' }}">
@@ -72,14 +73,17 @@
                             </form>
                         </td>
                         <td>
-                            <a href="{{ route('destinations.edit', $destination->id) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('destinations.destroy', $destination->id) }}" method="POST" style="display:inline-block;">
+                            <a href="{{ route('admin.destinations.edit', $destination->id) }}" class="btn btn-warning">Edit</a>
+                            <form action="{{ route('admin.destinations.destroy', $destination->id) }}" method="POST" style="display:inline-block;" onclick="return confirm('Are you sure,You want to delete ?')">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger">Delete</button>
                             </form>
                         </td>
                     </tr>
+                    @php
+                    $serial++;
+               @endphp
                 @endforeach
             </tbody>
         </table>

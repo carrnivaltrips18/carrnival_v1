@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Edit Destination</h1>
         
-        <form action="{{ route('destinations.update', $destination->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.destinations.update', $destination->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-group">
@@ -18,7 +18,8 @@
             <div class="form-group">
                 <label for="banner">Banner</label>
                 @if($destination->banner)
-                    <img src="{{ asset('storage/' . $destination->banner) }}" width="100" alt="Banner">
+                    <img src="{{ asset('storage/' . $destination->banner) }}" width="200" height="150" alt="Banner">
+
                 @endif
                 <input type="file" class="form-control" id="banner" name="banner">
             </div>

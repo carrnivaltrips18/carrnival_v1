@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DestinationSeeder::class);
         $this->call(PopularTourSeeder::class);
         $this->call(ActivitySeeder::class);
+        $this->call(ItinerarySeeder::class);
 
         // $this->call([
         //     RolesAndPermissionsSeeder::class,

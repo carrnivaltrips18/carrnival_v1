@@ -86,17 +86,23 @@
               </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('destinations.index') }}" class="nav-link {{ Request::routeIs('destinations.index') ? 'active' : '' }}">
-              <i class="fa-solid fa-street-view"></i>
+            <a href="{{ route('admin.destinations.index') }}" class="nav-link {{ Request::routeIs('admin.destinations.index') ? 'active' : '' }}">
+              <i class="fas fa-street-view"></i>
                 <p>Destinations</p>
             </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('popular_tours.index') }}" class="nav-link {{ Request::routeIs('popular_tours.index') ? 'active' : '' }}">
-            <i class="fa-solid fa-street-view"></i>
+          <a href="{{ route('admin.popular_tours.index') }}" class="nav-link {{ Request::routeIs('admin.popular_tours.index') ? 'active' : '' }}">
+            <i class="fas fa-plane"></i>
               <p> Popular Tours</p>
           </a>
       </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.itineraries.index') }}" class="nav-link {{ Request::routeIs('admin.itineraries.index') ? 'active' : '' }}">
+          <i class="fas fa-route"></i>
+            <p> Itineraries</p>
+        </a>
+    </li>
       
         @endif
             

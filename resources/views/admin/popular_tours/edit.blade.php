@@ -11,7 +11,7 @@
         </div>
     @endif
 
-    <form action="{{ route('popular_tours.update', $popularTour->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.popular_tours.update', $popularTour->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         
@@ -57,7 +57,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Update Tour</button>
-        <a href="{{ route('popular_tours.index') }}" class="btn btn-secondary">Cancel</a>
+        <a href="{{ route('admin.popular_tours.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 @endsection

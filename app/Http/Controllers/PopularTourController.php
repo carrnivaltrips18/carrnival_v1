@@ -21,11 +21,24 @@ class PopularTourController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        $popularTours = PopularTour::with('destination')
-            ->where('package_name', 'LIKE', "%$search%")
-            ->paginate(10);
+       
+        // $popularTours = PopularTour::with('destination')
+        //     ->where('package_name', 'LIKE', "%$search%")
+        //     ->paginate(10);
 
-        return view('popular_tours.index', compact('popularTours'));
+        $popularTours = PopularTour::with('destination')
+        ->where(function($query) use ($search) {
+            $keywords = explode(' ', $search); // Split the search term by spaces
+            foreach ($keywords as $keyword) {
+                $query->where('package_name', 'LIKE', "%$keyword%")
+                      ->orWhereHas('destination', function($q) use ($keyword) {
+                          $q->where('name', 'LIKE', "%$keyword%");
+                      });
+            }
+        })
+        ->paginate(10);
+
+        return view('admin.popular_tours.index', compact('popularTours'));
     }
 
     /**
@@ -34,7 +47,7 @@ class PopularTourController extends Controller
     public function create()
     {
         $destinations = Destination::all();
-        return view('popular_tours.create', compact('destinations'));
+        return view('admin.popular_tours.create', compact('destinations'));
     }
 
     /**
@@ -59,7 +72,7 @@ class PopularTourController extends Controller
 
         $tour->save();
 
-        return redirect()->route('popular_tours.index')->with('success', 'Popular Tour created successfully.');
+        return redirect()->route('admin.popular_tours.index')->with('success', 'Popular Tour created successfully.');
     }
 
     /**
@@ -77,7 +90,7 @@ class PopularTourController extends Controller
     {
         $popularTour = PopularTour::findOrFail($id);
         $destinations = Destination::all();
-        return view('popular_tours.edit', compact('popularTour', 'destinations'));
+        return view('admin.popular_tours.edit', compact('popularTour', 'destinations'));
     }
 
     /**
@@ -107,7 +120,7 @@ class PopularTourController extends Controller
 
         $tour->save();
 
-        return redirect()->route('popular_tours.index')->with('success', 'Popular Tour updated successfully.');
+        return redirect()->route('admin.popular_tours.index')->with('success', 'Popular Tour updated successfully.');
     }
 
     /**
@@ -120,7 +133,7 @@ class PopularTourController extends Controller
             Storage::disk('public')->delete($tour->package_image);
         }
         $tour->delete();
-        return redirect()->route('popular_tours.index')->with('success', 'Popular Tour deleted successfully.');
+        return redirect()->route('admin.popular_tours.index')->with('success', 'Popular Tour deleted successfully.');
     }
 
     public function exportCsvPopularTours()
@@ -219,6 +232,19 @@ class PopularTourController extends Controller
         return redirect()->back()->with('error', 'Sample CSV file not found.');
     }
 
+    // public function filterByDestination($name)
+    // {
+    //     // Fetch the destination by name
+    //     $destination = Destination::where('name', $name)->first();
 
+    //     if (!$destination) {
+    //         return redirect()->back()->with('error', 'Destination not found.');
+    //     }
 
+    //     // Fetch popular tours related to this destination
+    //     $tours = PopularTour::where('destination_id', $destination->id)->paginate(10); // Adjust the pagination as needed
+
+    //     // Pass the tours to a view
+    //     return view('admin.popular_tours.index', compact('tours', 'destination'));
+    // }
 }

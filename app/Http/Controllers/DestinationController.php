@@ -28,7 +28,7 @@ class DestinationController extends Controller
             return $query->where('name', 'like', '%' . $search . '%')
                         ->orWhere('title', 'like', '%' . $search . '%');
         })->paginate(10); // Paginate results
-        return view('destinations.index', compact('destinations'));
+        return view('admin.destinations.index', compact('destinations'));
     }
 
     /**
@@ -36,7 +36,7 @@ class DestinationController extends Controller
      */
     public function create()
     {
-        return view('destinations.create');
+        return view('admin.destinations.create');
     }
 
     /**
@@ -59,7 +59,7 @@ class DestinationController extends Controller
 
         Destination::create($validated);
 
-        return redirect()->route('destinations.index')->with('success', 'Destination created successfully.');
+        return redirect()->route('admin.destinations.index')->with('success', 'Destination created successfully.');
     }
 
     /**
@@ -75,7 +75,7 @@ class DestinationController extends Controller
      */
     public function edit(Destination $destination)
     {
-        return view('destinations.edit', compact('destination'));
+        return view('admin.destinations.edit', compact('destination'));
     }
 
     /**
@@ -104,7 +104,7 @@ class DestinationController extends Controller
       //  dd($validated);
         $destination->update($validated);
 
-        return redirect()->route('destinations.index')->with('success', 'Destination updated successfully.');
+        return redirect()->route('admin.destinations.index')->with('success', 'Destination updated successfully.');
     }
 
     /**
@@ -113,7 +113,7 @@ class DestinationController extends Controller
     public function destroy(Destination $destination)
     {
         $destination->delete();
-        return redirect()->route('destinations.index')->with('success', 'Destination deleted successfully.');
+        return redirect()->route('admin.destinations.index')->with('success', 'Destination deleted successfully.');
     }
 
     public function exportCsvDestination()
@@ -214,7 +214,7 @@ class DestinationController extends Controller
         $destination->status = $destination->status === '1' ? '0' : '1';
         $destination->save();
 
-        return redirect()->route('destinations.index')->with('success', 'Destination status updated successfully!');
+        return redirect()->route('admin.destinations.index')->with('success', 'Destination status updated successfully!');
     }
 
     public function downloadSampleCsv()
